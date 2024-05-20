@@ -1,7 +1,9 @@
-import { Elysia } from "elysia";
+import { app } from "./configs/app";
+import { env } from "./configs/env";
 
-const app = new Elysia().get("/", () => "Hello Elysia").listen(3000);
+app.listen(env.PORT, () => {
+  console.log("Hello via Bun!");
+  console.log(`Server is running on port http://localhost:${env.PORT}`);
+});
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+export type App = typeof app;
