@@ -13,40 +13,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model RecipeCategory {
-  name    String @id
-  recipes Recipe[]
-
-  @@map("recipe_categories")
-}
-
 model Recipe {
-  id          String         @id @default(cuid())
-  title       String         @db.VarChar(100)
-  ingredients String         @db.MediumText
-  steps       String         @db.MediumText
-  loves       Int            @default(0)
-  url         String         @db.VarChar(255)
-  categoryId  String
-  category    RecipeCategory @relation(fields: [categoryId], references: [name])
+  id          String @id @default(cuid())
+  title       String @db.VarChar(100)
+  ingredients String @db.MediumText
+  steps       String @db.MediumText
+  loves       Int    @default(0)
+  url         String @db.VarChar(255)
+  category    String @db.VarChar(50)
 
   @@map("recipes")
-}
-
-model Account {
-  id       String  @id @default(cuid())
-  email    String  @unique
-  password String
-  tokens   Token[]
-
-  @@map("accounts")
-}
-
-model Token {
-  id        String  @id @default(cuid())
-  accountId String
-  token     String
-  account   Account @relation(fields: [accountId], references: [id])
-
-  @@map("tokens")
 }

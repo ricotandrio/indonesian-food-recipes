@@ -4,10 +4,10 @@ export interface RecipeDTO {
   steps: string;
   loves: number;
   url: string;
-  categoryId: string;
+  category: string;
 }
 
-export interface RecipeDatasetSchema {
+export interface CleanedDatasetSchema {
   Title: string;
   Ingredients: string;
   Steps: string;
@@ -16,13 +16,13 @@ export interface RecipeDatasetSchema {
   Category: string;
 }
 
-export const toRecipeDTO = (data: RecipeDatasetSchema): RecipeDTO => {
+export const toRecipeDTO = (data: CleanedDatasetSchema): RecipeDTO => {
   return {
     title: data.Title,
     ingredients: data.Ingredients,
     steps: data.Steps,
-    loves: Number(data.Loves),
+    loves: data.Loves,
     url: data.URL,
-    categoryId: data.Category,
+    category: data.Category,
   };
-}
+};
