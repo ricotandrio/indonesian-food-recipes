@@ -1,7 +1,7 @@
 import path from 'path';
 import parse from "csv-simple-parser";
-import { prisma } from "../src/configs/database";
-import { CleanedDatasetSchema } from "../src/models/dtos/RecipeDTO";
+import { prisma } from "../src/setup/database";
+import { CleanedRecipeDatasetSchema } from "../src/models/recipes/recipe-dataset";
 import { ResponseError } from "../src/libs/ResponseError";
 
 export class UtilTest {
@@ -17,7 +17,7 @@ export class UtilTest {
 
     if(!file.exists()) throw new ResponseError(500, 'File not found');
 
-    const csv:CleanedDatasetSchema[] = parse(await file.text(), { header: true }) as unknown as CleanedDatasetSchema[];
+    const csv:CleanedRecipeDatasetSchema[] = parse(await file.text(), { header: true }) as unknown as CleanedRecipeDatasetSchema[];
     
     for (const row of csv) {
       const loves = parseInt(String(row.Loves), 10);

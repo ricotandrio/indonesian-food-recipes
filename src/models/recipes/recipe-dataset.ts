@@ -1,13 +1,6 @@
-export interface RecipeDTO {
-  title: string;
-  ingredients: string;
-  steps: string;
-  loves: number;
-  url: string;
-  category: string;
-}
+import { RecipeDTO } from "./recipe-dto";
 
-export interface CleanedDatasetSchema {
+export interface CleanedRecipeDatasetSchema {
   Title: string;
   Ingredients: string;
   Steps: string;
@@ -16,7 +9,7 @@ export interface CleanedDatasetSchema {
   Category: string;
 }
 
-export const toRecipeDTO = (data: CleanedDatasetSchema): RecipeDTO => {
+export const toRecipeDTO = (data: CleanedRecipeDatasetSchema): RecipeDTO => {
   return {
     title: data.Title,
     ingredients: data.Ingredients,
