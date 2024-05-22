@@ -48,17 +48,12 @@ Start the server
 bun run dev
 ```
 
-Open http://localhost:8080/ with your browser to see the result.
-## Running Tests
+Use http://localhost:8080/api/v1/ as the base URL and check http://localhost:8080/api/v1/swagger for API documentation.
 
-To run tests, run the following command
+## Dataset
+
+To initialize your database with food recipes data, please run tests with the following command:
 
 ```bash
 bun test
 ```
-
-
-## Contributing
-
-Contributions are always welcome!
-
