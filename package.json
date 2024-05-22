@@ -6,13 +6,13 @@
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
+    "@elysiajs/bearer": "^1.0.2",
     "@elysiajs/cors": "^1.0.2",
+    "@elysiajs/jwt": "^1.0.2",
     "@elysiajs/swagger": "^1.0.5",
     "@prisma/client": "^5.14.0",
-    "csv-parser": "^3.0.0",
     "csv-simple-parser": "^1.0.3",
     "elysia": "latest",
-    "jsonwebtoken": "^9.0.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {

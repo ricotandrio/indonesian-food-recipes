@@ -1,53 +1,125 @@
 import Elysia, { t } from "elysia";
 import { prisma } from "../setup/database";
-import { AccountService } from "../services/account-service";
 import { ResponseError } from "../libs/ResponseError";
+import jwt from "@elysiajs/jwt";
+import { env } from "../setup/env";
+import { HttpCode } from "../libs/HttpCode";
+import { Logging } from "../libs/Logging";
 
 export default new Elysia()
   .decorate('db', prisma)
+  .use(
+    jwt({
+      name: 'jwt',
+      secret: env.JWT_SECRET,
+      exp: '3d'
+    })
+  )
   .group('/account', (router) => 
     router
+      // Register Endpoint
       .post(
-          '/login', async ({ db, body, set }) => {
+        '/register', async ({ jwt, db, body, set }) => {
           try {
-            const account = await AccountService.login({
-              db: db,
-              email: body.email,
-              password: body.password,
+            const account = await db.account.create({
+              data: {
+                email: body.email,
+                password: body.password,
+              },
             });
 
-            return account;
+            const token = await jwt.sign({ id: account.id });
+
+            await db.token.create({
+              data: {
+                token: token,
+                account: {
+                  connect: {
+                    id: account.id,
+                  },
+                },
+              },
+            });
+
+            Logging.info(`Account with email ${account.email} has registered`);
+            set.status = HttpCode.created;
+            return {
+              code: HttpCode.created,
+              message: "Register success, welcome!",
+              data: {
+                ...account,
+                token: token,
+              },
+            };
           } catch(e) {
-            set.status = e instanceof ResponseError ? e.code : 500;
-            return e instanceof ResponseError ? e.message : "Internal Server Error";
+            Logging.error(e instanceof ResponseError ? e.message : 'Internal Server Error at /account/register');
+            set.status = e instanceof ResponseError ? e.code : HttpCode.internalServerError;
+
+            return e instanceof ResponseError ? 
+              e.toJson() : ResponseError.fromError(e as Error).toJson();
           }
         }, {
           body: t.Object({
             email: t.String(),
             password: t.String(),
           }),
+          detail: { 
+            tags: ['Account']
+          }
         }
       )
+      // Login Endpoint
       .post(
-        '/register', async ({ db, body, set }) => {
-          try {
-            const account = await AccountService.register({
-              db: db,
+        '/login', async ({ jwt, db, body, set }) => {
+        try {
+          const account = await db.account.findFirst({
+            where: {
               email: body.email,
               password: body.password,
-            });
+            },
+          });
 
-            return account;
-          } catch(e) {
-            set.status = e instanceof ResponseError ? e.code : 500;
-            return e instanceof ResponseError ? e.message : "Internal Server Error";
-          }
-        }, {
-          body: t.Object({
-            email: t.String(),
-            password: t.String(),
-          }),
+          if(!account) throw new ResponseError(HttpCode.unauthorized, "Login failed, email or password is incorrect");
+
+          const token = await jwt.sign({ id: account.id });
+
+          await db.token.create({
+            data: {
+              token: token,
+              account: {
+                connect: {
+                  id: account.id,
+                },
+              },
+            },
+          });
+
+          Logging.info(`Account with email ${account.email} has logged in`);
+          set.status = HttpCode.success;
+          return {
+            code: HttpCode.success,
+            message: "Login success, welcome!",
+            data: {
+              account: account,
+              token: token,
+            },
+          };
+        } catch(e) {
+          Logging.error(e instanceof ResponseError ? e.message : 'Internal Server Error at /account/login');
+          set.status = e instanceof ResponseError ? e.code : HttpCode.internalServerError;
+
+          return e instanceof ResponseError ? 
+            e.toJson() : ResponseError.fromError(e as Error).toJson();
         }
-      )
+      }, {
+        body: t.Object({
+          email: t.String(),
+          password: t.String(),
+        }),
+        detail: { 
+          tags: ['Account']
+        }
+      }
+    )
       
   );
