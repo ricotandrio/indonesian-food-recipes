@@ -24,3 +24,18 @@ model Recipe {
 
   @@map("recipes")
 }
+
+model Account {
+  id       String @id @default(cuid())
+  email    String @unique
+  password String  
+
+  tokens Token[]
+}
+
+model Token {
+  id        String @id @default(cuid())
+  token     String
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
+}
