@@ -1,0 +1,240 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Indonesian Food Recipes Documentation",
+    "description": "This is a documentation for Indonesian Food Recipes API. Built with ElysiaJS and Prisma ORM.",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Account",
+      "description": "Account related endpoints"
+    },
+    {
+      "name": "Recipes",
+      "description": "Recipes related endpoints"
+    },
+    {
+      "name": "Root",
+      "description": "Root endpoint"
+    }
+  ],
+  "paths": {
+    "/api/v1/account/register": {
+      "post": {
+        "parameters": [],
+        "operationId": "postApiV1AccountRegister",
+        "tags": [
+          "Account"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/api/v1/account/login": {
+      "post": {
+        "parameters": [],
+        "operationId": "postApiV1AccountLogin",
+        "tags": [
+          "Account"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/api/v1/recipes/{page}/{limit}": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "page",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "limit",
+            "required": true
+          }
+        ],
+        "operationId": "getApiV1RecipesByPageByLimit",
+        "tags": [
+          "Recipes"
+        ],
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/api/v1/recipes/search/{title}/{page}/{limit}": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "title",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "page",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "limit",
+            "required": true
+          }
+        ],
+        "operationId": "getApiV1RecipesSearchByTitleByPageByLimit",
+        "tags": [
+          "Recipes"
+        ],
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/api/v1/": {
+      "get": {
+        "operationId": "getApiV1",
+        "tags": [
+          "Root"
+        ],
+        "responses": {
+          "200": {}
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}
